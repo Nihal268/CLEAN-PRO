@@ -1,12 +1,11 @@
 import express from "express";
+import {userController} from "../controller/userController";
+
 const userRoute = express();
 
 
-userRoute.get("/", (req,res)=>{
-  res.send('Hello world ')
-})
+
+userRoute.post("/login", userController.login);
 
 
-
-
-export default userRoute
+export default userRoute ;
