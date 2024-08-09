@@ -5,15 +5,15 @@ const userRoute = express.Router();
 
 
 
-userRoute.post("/login", userController.login);
+userRoute.post("/login", (req,res)=>userController.login(req,res));
 
-userRoute.post("/otpLogin", userController.otpLogin);
+userRoute.post("/otpLogin", (req,res)=>userController.otpLogin(req,res));
 
-userRoute.post("/userSignup", userController.userSignup);
+userRoute.post("/userSignup",(req,res)=> userController.userSignup(req,res));
 
-userRoute.post("/itemPage", userController.itemPage);
+userRoute.post("/itemPage", (req,res)=>userController.itemPage(req,res));
 
-userRoute.post("/cart", userController.itemPage);
+userRoute.post("/cart", (req,res)=>userController.itemPage(req,res));
 
 
 export default userRoute ;
