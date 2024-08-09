@@ -3,29 +3,29 @@ import { Request, Response } from 'express';
 
 export class UserController {
 
-  public async login(req: Request, res: Response): Promise<void> {
+   async login(req: Request, res: Response) {
 
-    res.send("Login successfull"); 
+    res.send(" successfull"); 
   }
 
-  public async otpLogin(req: Request, res: Response): Promise<void> {
+   async otpLogin(req: Request, res: Response) {
 
-    res.send("Login successfull"); 
+    res.send(" successfull"); 
   }
 
-public async userSignup(req: Request, res: Response): Promise<void> {
+ async userSignup(req: Request, res: Response) {
 
-  res.send("Login successfull"); 
+  res.send(" successfull"); 
 }
 
-public async itemPage(req: Request, res: Response): Promise<void> {
+ async itemPage(req: Request, res: Response) {
 
-  res.send("Login successfull"); 
+  res.send(" successfull"); 
 }
 
-public async cart(req: Request, res: Response): Promise<void> {
+ async cart(req: Request, res: Response) {
 
-  res.send("Login successfull"); 
+  res.send(" successfull"); 
 }
 }
 
