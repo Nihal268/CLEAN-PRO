@@ -4,8 +4,18 @@ import { Request, Response } from 'express';
 export class UserController {
 
    async login(req: Request, res: Response) {
+          
+    const { phone } = req.body;
+      const user = {
+        mobile:req.body.phone
+      }
+    if (!phone) {
+      return res.status(400).send('Phone number is required');
+    }
 
-    res.send(" successfull"); 
+    req.session.user = phone;
+
+    res.send('Phone number saved to session successfully');
   }
 
    async otpLogin(req: Request, res: Response) {

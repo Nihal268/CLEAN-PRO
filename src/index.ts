@@ -4,11 +4,25 @@ import morgan from 'morgan';
 import cors from 'cors';
 import { connectToDatabase } from './db';
 import userRoute from './routes/userRoutes';
+import session from 'express-session';
+
+
+
 
 dotenv.config();
 connectToDatabase()
 const app = express();
 const port = process.env.PORT || 3000
+
+
+app.use(session({
+  secret: 'mysecret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false } 
+}));
+
+app.use(express.json());
 
 
 app.use(cors({
@@ -22,7 +36,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 app.get('/',(req,res)=>{
+  
   res.send('This is Cleanpro backend')
+  
 })
 app.use("/api/user", userRoute);
 
