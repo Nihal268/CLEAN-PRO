@@ -4,8 +4,6 @@ import morgan from 'morgan';
 import cors from 'cors';
 import { connectToDatabase } from './db';
 import userRoute from './routes/userRoutes';
-import session from 'express-session';
-
 
 
 
@@ -14,13 +12,6 @@ connectToDatabase()
 const app = express();
 const port = process.env.PORT || 3000
 
-
-app.use(session({
-  secret: 'mysecret',
-  resave: false,
-  saveUninitialized: true,
-  cookie: { secure: false } 
-}));
 
 app.use(express.json());
 
