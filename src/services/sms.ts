@@ -1,5 +1,5 @@
 
-export const sendSMS = async (mobile: string, otp: string) => {
+export const sendSMS = async (email: string, otp: string) => {
   try {
     return true
   }

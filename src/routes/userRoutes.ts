@@ -15,6 +15,16 @@ userRoute.get('/getItems', (req: Request, res: Response) => itemController.getAl
 
 userRoute.get('/addToCart', (req: Request, res: Response) => cartController.addToCart(req, res))
 
+userRoute.patch('/removeFromCart', (req: Request, res: Response) => cartController.removeFromCart(req, res))
+
+userRoute.patch('/changeQuantity', (req: Request, res: Response) => cartController.changeItemCount(req, res))
+
+userRoute.post('/addAddress', (req: Request, res: Response) => userController.addAddress(req, res))
+
+userRoute.delete('/deleteAddress', (req: Request, res: Response) => userController.deleteAddress(req, res))
+
+userRoute.patch('/editAddress', (req: Request, res: Response) => userController.editAddress(req, res))
+
 
 
 
