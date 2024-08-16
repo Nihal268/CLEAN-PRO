@@ -1,42 +1,76 @@
 
-import { Request, Response } from 'express';
+// import { Request, Response } from 'express';
+// const generateOtp = require("otp-generator");
+// import bcrypt from 'bcrypt';
+// import {User} from '../models/user'
 
-export class UserController {
+// function generateOTP() {
+//   const otp = Math.floor(100000 + Math.random() * 900000);
+//   return otp.toString();
+// }
 
-   async login(req: Request, res: Response) {
+// const securePassword = async (password: string) => {
+//   try {
+//     const passwordHash = await bcrypt.hash(password, 10);
+//     return passwordHash;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
+
+// export class UserController {
+
+// async login(req: Request, res: Response) {
           
-    const { phone } = req.body;
-      const user = {
-        mobile:req.body.phone
-      }
-    if (!phone) {
-      return res.status(400).send('Phone number is required');
-    }
+//   const { phone } = req.body;
+    
+//   if (!phone) {
+//     return res.status(400).send('Phone number is required');
+//   }
 
-    req.session.user = phone;
+//   const otp = generateOTP();
+//   req.session.user = { phone, otp }; 
 
-    res.send('Phone number saved to session successfully');
-  }
+//   console.log("Generated OTP:", otp);
+    
+//     res.send('Phone number saved to session successfully');
+//   }
 
-   async otpLogin(req: Request, res: Response) {
 
-    res.send(" successfull"); 
-  }
+// async otpLogin(req: Request, res: Response) {
 
- async userSignup(req: Request, res: Response) {
+//   const { otp } = req.body;
 
-  res.send(" successfull"); 
-}
+//   if (otp  == req.session.user?.otp) {
+//     return res.status(400).send('Invalid OTP');
+//   }
 
- async itemPage(req: Request, res: Response) {
+//   const phone = req.session.user?.phone;
 
-  res.send(" successfull"); 
-}
+//   const availableUser = await User.findOne({ mobile: phone });
 
- async cart(req: Request, res: Response) {
+//   if (!availableUser) {
+//     const user = new User({ mobile: phone });
+//     await user.save(); 
+//   }
 
-  res.send(" successfull"); 
-}
-}
+//     res.send(" successfull"); 
+//   }
 
-export const userController = new UserController();
+// async userSignup(req: Request, res: Response) {
+
+//   res.send(" successfull");   
+// }
+
+// async itemPage(req: Request, res: Response) {
+
+//   res.send(" successfull"); 
+// }
+
+// async cart(req: Request, res: Response) {
+
+//   res.send(" successfull"); 
+// }
+// }
+
+// export const userController = new UserController();
