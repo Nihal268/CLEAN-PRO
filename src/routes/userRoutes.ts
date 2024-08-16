@@ -1,12 +1,7 @@
 import express from "express";
-const userRoute = express();
 
-
-userRoute.get("/", (req,res)=>{
-  res.send('Hello world ')
-})
+const userRoute = express.Router();
 
 
 
-
-export default userRoute
+export default userRoute ;
