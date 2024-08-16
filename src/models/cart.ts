@@ -1,16 +1,33 @@
-import mongoose, { Schema, Document, Model } from 'mongoose';
+import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 
 interface ICartItem {
-  clothItemId: mongoose.Types.ObjectId;
+  clothItemId: Types.ObjectId;
   quantity: number;
+  service: 'wash' | 'dryClean' | 'iron';
 }
 
 interface ICart extends Document {
-  userId: mongoose.Types.ObjectId;
+  userId: mongoose.Schema.Types.ObjectId;
   items: ICartItem[];
-  createdAt: Date;
-  updatedAt: Date;
 }
+
+const cartItemSchema: Schema<ICartItem> = new Schema({
+  clothItemId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'ClothItem',
+    required: true
+  },
+  quantity: {
+    type: Number,
+    required: true,
+    min: 1
+  },
+  service: {
+    type: String,
+    enum: ['wash', 'dryClean', 'iron'],
+    required: true
+  }
+});
 
 const cartSchema: Schema<ICart> = new Schema({
   userId: {
@@ -18,18 +35,7 @@ const cartSchema: Schema<ICart> = new Schema({
     ref: 'User',
     required: true
   },
-  items: [{
-    clothItemId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'ClothItem',
-      required: true
-    },
-    quantity: {
-      type: Number,
-      required: true,
-      min: 1
-    }
-  }],
+  items: [cartItemSchema]
 }, {
   timestamps: true
 });
@@ -37,4 +43,4 @@ const cartSchema: Schema<ICart> = new Schema({
 
 const Cart: Model<ICart> = mongoose.model<ICart>('Cart', cartSchema);
 
-export { Cart, ICart };
+export { Cart, ICart, ICartItem };

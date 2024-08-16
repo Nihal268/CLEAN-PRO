@@ -5,7 +5,7 @@ import { addUser, fetchUser } from '../services/user';
 import bcrypt from 'bcrypt'
 
 
-export const sendOtp = async (req: Request, res: Response) => {
+const sendOtp = async (req: Request, res: Response) => {
   try {
     const { mobile } = req.body;
     if (!/^\d{10}$/.test(mobile)) {
@@ -24,7 +24,7 @@ export const sendOtp = async (req: Request, res: Response) => {
         });
       }
 
-      res.status(200).json({
+      return res.status(200).json({
         success: true,
         message: 'Otp sent successfully',
       });
@@ -37,7 +37,7 @@ export const sendOtp = async (req: Request, res: Response) => {
 };
 
 
-export const verifyOtp = async (req: Request, res: Response) => {
+const verifyOtp = async (req: Request, res: Response) => {
   try {
     const { otp, mobile } = req.body;
     const savedOtp = await getSavedOtp(mobile)
@@ -79,7 +79,7 @@ const securePassword = async (password: string) => {
 };
 
 
-export const signUp = async (req: Request, res: Response) => {
+const signUp = async (req: Request, res: Response) => {
   try {
     const { name, mobile, password } = req.body;
     console.log(name);
@@ -97,11 +97,11 @@ export const signUp = async (req: Request, res: Response) => {
         data: userExist
       });
     }
-    
+
     const savedUser = await addUser(name, mobile, hashedPassword as string)
     if (savedUser) {
       console.log('USER CREATED');
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: 'New user created',
         data: savedUser
