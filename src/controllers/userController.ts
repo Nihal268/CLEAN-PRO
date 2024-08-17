@@ -7,16 +7,16 @@ import bcrypt from 'bcrypt'
 
 const sendOtp = async (req: Request, res: Response) => {
   try {
-    const { mobile } = req.body;
-    if (!/^\d{10}$/.test(mobile)) {
+    const { email } = req.body;
+    if (!/^\d{10}$/.test(email)) {
       return res.status(400).json({ error: 'Invalid mobile number' });
     }
 
     const otp = generateOtp()
-    const smsSent = await sendSMS(mobile, otp);
+    const smssent = await sendSMS(email, otp);
 
-    if (smsSent) {
-      const otpSaved = await saveOtp(mobile, otp)
+    if (smssent) {
+      const otpSaved = await saveOtp(email, otp)
       if (!otpSaved) {
         return res.status(500).json({
           success: false,
