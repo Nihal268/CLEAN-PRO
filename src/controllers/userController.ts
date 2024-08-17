@@ -39,8 +39,9 @@ const sendOtp = async (req: Request, res: Response) => {
 
 const verifyOtp = async (req: Request, res: Response) => {
   try {
-    const { otp, mobile } = req.body;
-    const savedOtp = await getSavedOtp(mobile)
+    const { otp, email } = req.body;
+    console.log(otp,email)
+    const savedOtp = await getSavedOtp(email)
 
     if (!savedOtp) {
       return res.status(400).json({
@@ -50,7 +51,7 @@ const verifyOtp = async (req: Request, res: Response) => {
     }
 
     if (savedOtp.otp === otp) {
-      const user = await fetchUser(mobile)
+      const user = await fetchUser(email)
       return res.status(200).json({
         success: true,
         message: 'Entered OTP is correct',
