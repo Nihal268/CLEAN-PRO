@@ -6,7 +6,7 @@ const password=process.env.PASSWORD;
 const adminEmail=process.env.EMAIL;
 
 
-export  const sendSMS = async ( email:string, otp:string)=> {
+ export const sendSMS = async ( email:string, otp:string)=> {
   try {
 
     const transporter = nodemailer.createTransport({
@@ -40,7 +40,6 @@ export  const sendSMS = async ( email:string, otp:string)=> {
     console.log(error.message);
   }
 };
-
 
 
 

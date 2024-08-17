@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { sendSMS } from '../services/sms';
+import { sendSMS }  from '../services/sms';
 import { generateOtp, getSavedOtp, saveOtp } from '../services/otp';
 import { addUser, fetchUser } from '../services/user';
 import bcrypt from 'bcrypt'
@@ -7,16 +7,16 @@ import bcrypt from 'bcrypt'
 
 const sendOtp = async (req: Request, res: Response) => {
   try {
-    const { mobile } = req.body;
-    if (!/^\d{10}$/.test(mobile)) {
-      return res.status(400).json({ error: 'Invalid mobile number' });
+    const { email } = req.body;
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: 'Invalid email' });
     }
 
     const otp = generateOtp()
-    const smsSent = await sendSMS(mobile, otp);
+    const smsSent = await sendSMS(email, otp);
 
     if (smsSent) {
-      const otpSaved = await saveOtp(mobile, otp)
+      const otpSaved = await saveOtp(email, otp)
       if (!otpSaved) {
         return res.status(500).json({
           success: false,
@@ -82,7 +82,7 @@ const securePassword = async (password: string) => {
 
 const signUp = async (req: Request, res: Response) => {
   try {
-    const { name, mobile, password } = req.body;
+    const { name,email,password, mobile   } = req.body;
     console.log(name);
     console.log(mobile);
 
@@ -99,7 +99,7 @@ const signUp = async (req: Request, res: Response) => {
       });
     }
 
-    const savedUser = await addUser(name, mobile, hashedPassword as string)
+    const savedUser = await addUser(name, email, hashedPassword as string,mobile)
     if (savedUser) {
       console.log('USER CREATED');
       return res.status(200).json({
