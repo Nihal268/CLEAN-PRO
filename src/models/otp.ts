@@ -1,14 +1,14 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 
 interface IOtp extends Document {
-  mobile: number;
+  email: string;
   otp: string;
   createdAt: Date;
 }
 
 const otpSchema: Schema<IOtp> = new Schema({
-  mobile: {
-    type: Number,
+  email: {
+    type: String,
     required: true
   },
   otp: {

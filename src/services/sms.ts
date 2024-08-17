@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 const nodemailer=require('nodemailer')
 
 
@@ -7,6 +8,9 @@ const adminEmail=process.env.EMAIL;
 
 
 export  const sendSMS = async ( email:string, otp:string)=> {
+=======
+export const sendSMS = async (email: string, otp: string) => {
+>>>>>>> c5711379a6aa060c188a8c00792eb04c9d58fa32
   try {
 
     const transporter = nodemailer.createTransport({

@@ -6,6 +6,10 @@ interface IAddress extends Document {
   city: string;
   state: string;
   postalCode: string;
+  location: {
+    type: 'Point';
+    coordinates: [number, number];
+  };
   isDefault: boolean;
 }
 
@@ -34,6 +38,17 @@ const addressSchema: Schema<IAddress> = new Schema({
     type: String,
     required: true,
     trim: true
+  },
+  location: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true
+    },
+    coordinates: {
+      type: [Number],
+      required: true
+    }
   },
   isDefault: {
     type: Boolean,
