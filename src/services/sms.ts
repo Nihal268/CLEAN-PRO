@@ -1,25 +1,19 @@
+import nodemailer from 'nodemailer'
 
-const nodemailer=require('nodemailer')
-
-
-const password=process.env.PASSWORD;
-const adminEmail=process.env.EMAIL;
-
-
- export const sendSMS = async ( email:string, otp:string)=> {
+export const sendSMS = async (email: string, otp: string) => {
   try {
 
     const transporter = nodemailer.createTransport({
-      host: 'SMTP.gmail.com', 
+      host: 'SMTP.gmail.com',
       port: 587,
       secure: false,
       requireTLS: true,
-      service:'gmail',
-      
+      service: 'gmail',
+
       auth: {
         user: 'cleanprofficial1@gmail.com',
         pass: 'wfge xhpl ejaq tnpw'
-        
+
       }
     });
     const mailOptions = {
@@ -31,11 +25,8 @@ const adminEmail=process.env.EMAIL;
 
     const info = await transporter.sendMail(mailOptions);
     console.log('Email has been sent:', info.response);
-    return true; 
-  } catch (error:any) {
+    return true;
+  } catch (error: any) {
     console.log(error.message);
   }
 };
-
-
-
