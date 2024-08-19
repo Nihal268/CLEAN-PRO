@@ -3,9 +3,9 @@ import { sendSMS } from '../services/sms';
 import { generateOtp, getSavedOtp, saveOtp } from '../services/otp';
 import { addUser, fetchUser } from '../services/user';
 import bcrypt from 'bcrypt'
-import { manageAddAddress, manageDeleteAddress, manageEditAddress } from '../services/address';
+import { fetchAddressses, manageAddAddress, manageDeleteAddress, manageEditAddress } from '../services/address';
+import { fetchUserCart } from '../services/cart';
 
-// want to get this change
 const sendOtp = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
@@ -206,6 +206,51 @@ const editAddress = async (req: Request, res: Response) => {
 }
 
 
+const getCheckoutPageDetails = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields.',
+      });
+    }
+
+    const cart = await fetchUserCart(userId)
+    const addresses = await fetchAddressses(userId)
+
+    if (cart) {
+      console.log({
+        cart,
+        addresses
+      });
+      
+      return res.status(200).json({
+        success: true,
+        data: {
+          cart,
+          addresses
+        }
+      });
+    }
+
+
+
+    return res.status(400).json({
+      success: false,
+      message: 'Unable to fetch checkout page details',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+
+
+
+
 
 export default {
   sendOtp,
@@ -213,5 +258,6 @@ export default {
   signUp,
   addAddress,
   deleteAddress,
-  editAddress
+  editAddress,
+  getCheckoutPageDetails
 }

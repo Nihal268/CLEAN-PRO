@@ -2,6 +2,7 @@ import express, { Request, Response } from 'express';
 import userController from "../controllers/userController"
 import itemController from "../controllers/itemController"
 import cartController from '../controllers/cartController';
+import orderController from '../controllers/orderController';
 
 const userRoute = express.Router();
 
@@ -24,6 +25,14 @@ userRoute.post('/addAddress', (req: Request, res: Response) => userController.ad
 userRoute.delete('/deleteAddress', (req: Request, res: Response) => userController.deleteAddress(req, res))
 
 userRoute.patch('/editAddress', (req: Request, res: Response) => userController.editAddress(req, res))
+
+userRoute.get('/checkoutPage/:userId', (req: Request, res: Response) => userController.getCheckoutPageDetails(req, res))
+
+userRoute.post('/order', (req: Request, res: Response) => orderController.confirmOrder(req, res))
+
+userRoute.get('/userOrders/:userId', (req: Request, res: Response) => orderController.fetchUserOrders(req, res))
+
+
 
 
 

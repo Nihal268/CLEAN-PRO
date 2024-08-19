@@ -4,7 +4,7 @@ import { manageAddToCart, manageChangeItemCount, manageRemoveFromCart } from '..
 const addToCart = async (req: Request, res: Response) => {
   try {
     const { userId, service, items } = req.body;
-    
+
     if (!userId || !service || !items) {
       return res.status(400).json({
         success: false,
@@ -76,7 +76,7 @@ const removeFromCart = async (req: Request, res: Response) => {
 const changeItemCount = async (req: Request, res: Response) => {
   try {
     const { userId, itemId, service, count } = req.body;
-    
+
     if (!userId || !itemId || !service || !count) {
       return res.status(400).json({
         success: false,
@@ -111,8 +111,9 @@ const changeItemCount = async (req: Request, res: Response) => {
 }
 
 
+
 export default {
   addToCart,
   removeFromCart,
-  changeItemCount
+  changeItemCount,
 }

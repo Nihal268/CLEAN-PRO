@@ -6,6 +6,7 @@ interface IOrder extends Document {
   addressId: mongoose.Types.ObjectId;
   status: string;
   totalPrice: number;
+  deliveryMode: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -37,6 +38,10 @@ const orderSchema: Schema<IOrder> = new Schema({
     type: Number,
     required: true
   },
+  deliveryMode: {
+    type: String,
+    required: true
+  }
 }, {
   timestamps: true
 });

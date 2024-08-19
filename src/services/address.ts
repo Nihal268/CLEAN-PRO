@@ -37,4 +37,12 @@ export const manageEditAddress = async (addressId: string, street: string, city:
     { new: true }
   );
   return edited
-} 
+}
+
+
+export const fetchAddressses = async (userId: string) => {
+  const addresses = await Address.find({ userId })
+  return addresses
+}
+
+
