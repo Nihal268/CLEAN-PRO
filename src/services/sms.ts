@@ -29,13 +29,9 @@ const adminEmail=process.env.EMAIL;
       html: `<p>Hi ${name}, please  check your otp for ${otp} to verify your email.</p>`
     };
 
-    transporter.sendMail(mailOptions,  (error:any, info:any)=> {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('Email has been sent:', info.response);
-      }
-    });
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Email has been sent:', info.response);
+    return true; 
   } catch (error:any) {
     console.log(error.message);
   }
