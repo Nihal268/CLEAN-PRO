@@ -1,9 +1,9 @@
 import express, { Request, Response } from 'express';
-import userController from "../controllers/userController"
+import adminController from "../controllers/adminController"
 
 const adminRoute = express.Router();
 
-// adminRoute.post('/', (req: Request, res: Response) => userController.sendOtp(req, res))
+adminRoute.post('/adminLogin', (req: Request, res: Response) => adminController.adminLogin(req, res))
 
 
 export default adminRoute;
