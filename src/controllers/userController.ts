@@ -1,15 +1,16 @@
 import { Request, Response } from 'express';
-import { sendSMS }  from '../services/sms';
+import { sendSMS } from '../services/sms';
 import { generateOtp, getSavedOtp, saveOtp } from '../services/otp';
 import { addUser, fetchUser } from '../services/user';
 import bcrypt from 'bcrypt'
+import { manageAddAddress, manageDeleteAddress, manageEditAddress } from '../services/address';
 
 // want to get this change
 const sendOtp = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
-    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      return res.status(400).json({ error: 'Invalid email' });
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: 'Invalid email address' });
     }
 
     const otp = generateOtp()
@@ -40,7 +41,12 @@ const sendOtp = async (req: Request, res: Response) => {
 const verifyOtp = async (req: Request, res: Response) => {
   try {
     const { otp, email } = req.body;
-    console.log(otp,email)
+    if (!otp || !email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields.',
+      });
+    }
     const savedOtp = await getSavedOtp(email)
 
     if (!savedOtp) {
@@ -82,16 +88,19 @@ const securePassword = async (password: string) => {
 
 const signUp = async (req: Request, res: Response) => {
   try {
-    const { name,email,password, mobile   } = req.body;
-    console.log(name);
-    console.log(mobile);
+    const { name, mobile, password, email } = req.body;
+
+    if (!name || !mobile || !password || !email) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields.',
+      });
+    }
 
     const hashedPassword = await securePassword(password)
-    console.log('Hashed passwprd', hashedPassword);
 
-    const userExist = await fetchUser(mobile)
-    if(userExist){
-      console.log('USER ALREADY EXISTS');
+    const userExist = await fetchUser(email)
+    if (userExist) {
       return res.status(400).json({
         success: false,
         message: 'User already exists',
@@ -99,11 +108,10 @@ const signUp = async (req: Request, res: Response) => {
       });
     }
 
-    const savedUser = await addUser(name, email, hashedPassword as string,mobile)
+    const savedUser = await addUser(name, email, hashedPassword as string, mobile)
     if (savedUser) {
-      console.log('USER CREATED');
       return res.status(200).json({
-        success: false,
+        success: true,
         message: 'New user created',
         data: savedUser
       });
@@ -116,8 +124,94 @@ const signUp = async (req: Request, res: Response) => {
 }
 
 
+const addAddress = async (req: Request, res: Response) => {
+  try {
+    const { userId, street, city, state, postalCode, coordinates } = req.body;
+
+    if (!userId || !street || !city || !state || !postalCode || !coordinates) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields.',
+      });
+    }
+
+    const addressAdded = await manageAddAddress(userId, street, city, state, postalCode, coordinates);
+    if (addressAdded) {
+      return res.status(200).json({
+        success: true,
+        message: 'New address added',
+        data: addressAdded
+      });
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: 'Unable to add address',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+const deleteAddress = async (req: Request, res: Response) => {
+  try {
+    const { addressId } = req.body;
+
+    if (!addressId) {
+      return res.status(400).json({
+        success: false,
+        message: 'Missing required fields.',
+      });
+    }
+
+    const deletedAddress = await manageDeleteAddress(addressId);
+    if (deletedAddress) {
+      return res.status(200).json({
+        success: true,
+        message: 'Address deleted successfully',
+      });
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: 'Unable to delete address',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+const editAddress = async (req: Request, res: Response) => {
+  try {
+    const { addressId, street, city, state, postalCode, coordinates } = req.body;
+
+    const editedAddress = await manageEditAddress(addressId, street, city, state, postalCode, coordinates);
+    if (editedAddress) {
+      return res.status(200).json({
+        success: true,
+        message: 'Address updated successfully',
+      });
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: 'Unable to update address',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+
+
 export default {
   sendOtp,
   verifyOtp,
-  signUp
+  signUp,
+  addAddress,
+  deleteAddress,
+  editAddress
 }
