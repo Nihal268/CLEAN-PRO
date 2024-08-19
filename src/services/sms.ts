@@ -17,16 +17,16 @@ const adminEmail=process.env.EMAIL;
       service:'gmail',
       
       auth: {
-        user: 'nihalmuhaednihal@gmail.com',
+        user: 'cleanprofficial1@gmail.com',
         pass: 'wfge xhpl ejaq tnpw'
         
       }
     });
     const mailOptions = {
-      from: 'nihalmuhaednihal@gmail.com',
+      from: 'cleanprofficial1@gmail.com',
       to: email,
       subject: 'Email Verification',
-      html: `<p>Hi ${name}, please  check your otp for ${otp} to verify your email.</p>`
+      html: `<p>Hi , please  check your otp for ${otp} to verify your email.</p>`
     };
 
     const info = await transporter.sendMail(mailOptions);
