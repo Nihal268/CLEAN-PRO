@@ -4,7 +4,7 @@ import { generateOtp, getSavedOtp, saveOtp } from '../services/otp';
 import { addUser, fetchUser } from '../services/user';
 import bcrypt from 'bcrypt'
 
-
+// want to get this change
 const sendOtp = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
