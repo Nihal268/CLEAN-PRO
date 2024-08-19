@@ -4,6 +4,8 @@ import morgan from 'morgan';
 import cors from 'cors';
 import { connectToDatabase } from './db';
 import userRoute from './routes/userRoutes';
+import adminRoute from './routes/adminRoutes';
+
 
 
 
@@ -32,6 +34,9 @@ app.get('/',(req,res)=>{
   
 })
 app.use("/api/user", userRoute);
+
+app.use("/api/admin", adminRoute);
+
 
 
 app.listen(port, () => {
