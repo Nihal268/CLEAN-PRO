@@ -70,9 +70,6 @@ export const manageChangeItemCount = async (userId: string, itemId: string, serv
 
 export const fetchUserCart = async (userId: string): Promise<ICart | null> => {
   let cart = await Cart.findOne({ userId }).populate("items.clothItemId")
-  if (!cart) {
-    return cart
-  }
   return cart
 }
 

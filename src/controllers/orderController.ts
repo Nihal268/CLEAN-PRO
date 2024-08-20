@@ -14,10 +14,8 @@ const confirmOrder = async (req: Request, res: Response) => {
     }
 
     const order = await createOrder(userId, addressId, deliveryMode)
-
     if (order) {
-      await deleteUserCart(userId)
-
+      // await deleteUserCart(userId)
       return res.status(200).json({
         success: true,
         data: order
@@ -35,10 +33,10 @@ const confirmOrder = async (req: Request, res: Response) => {
   }
 }
 
+
 const fetchUserOrders = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params
-
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -47,12 +45,13 @@ const fetchUserOrders = async (req: Request, res: Response) => {
     }
 
     const userOrders = await fetchAllUserOrders(userId)
-
+    console.log(userOrders);
+    
     if (userOrders) {
       return res.status(200).json({
         success: true,
         data: userOrders
-      });
+      }); 
     }
 
     return res.status(400).json({

@@ -3,7 +3,7 @@ import { ICartItem } from "../models/cart";
 import { IClothItem } from "../models/clothItem";
 import { DeliveryMode, IDeliveryMode } from "../models/deliveryMode";
 import { Order } from "../models/order";
-import { fetchUserCart, fetchUserCartItems } from "./cart";
+import { fetchUserCartItems } from "./cart";
 
 
 
@@ -27,24 +27,35 @@ export const calculateTotalAmount = async (userId: string, deliveryMode: IDelive
   return totalAmount;
 }
 
-// SMALL ISSUES IN THIS PART TO BE CHECKED
-// Need to add a proper item list as needed in the order collection while saving
+
+
 export const createOrder = async (userId: string, addressId: string, deliveryMode: IDeliveryModeParams) => {
-  const cart = await fetchUserCart(userId)
-  console.log('CART CART ', cart);
-  
   const clothItems = await fetchUserCartItems(userId)
-  const totalPrice = await calculateTotalAmount(userId, deliveryMode)
-  const newOrder = await Order.create({ userId, addressId, deliveryMode, totalPrice, clothItems })
-  return newOrder
+
+  if (clothItems) {
+    const itemsWithPrices = clothItems.map(item => {
+      const clothItem = item.clothItemId as unknown as IClothItem
+      const price = clothItem.prices[0][item.service];
+
+      return {
+        clothItemId:clothItem._id,
+        name: clothItem.name,
+        category: clothItem.category,
+        quantity: item.quantity,
+        service: item.service,
+        unitPrice: price,
+      };
+    })
+    console.log(itemsWithPrices)
+
+    const totalPrice = await calculateTotalAmount(userId, deliveryMode)
+    const newOrder = await Order.create({ userId, addressId, deliveryMode, totalPrice, clothItems: itemsWithPrices })
+    return newOrder
+  }
 }
 
-// SMALL ISSUES IN THIS PART TO BE CHECKED while fetching all orders the orders the item details need to be populated
+
 export const fetchAllUserOrders = async (userId: string) => {
   const orders = await Order.find({ userId })
-  .populate({
-    path: 'clothItems', // Field to populate
-    model: 'ClothItem' // Model to populate with
-  });
   return orders
 }
