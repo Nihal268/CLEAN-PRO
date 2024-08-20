@@ -27,6 +27,86 @@ const adminLogin = async (req: Request, res: Response) => {
     }
   };
 
+
+  const userDetails = async (req: Request, res: Response) => {
+    try {
+   
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
+  const request = async (req: Request, res: Response) => {
+    try {
+   
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
+  const items = async (req: Request, res: Response) => {
+    try {
+   
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
+  const addItems = async (req: Request, res: Response) => {
+    try {
+   
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
+  const offers = async (req: Request, res: Response) => {
+    try {
+   
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
+  const addOffers = async (req: Request, res: Response) => {
+    try {
+   
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
+  const agents = async (req: Request, res: Response) => {
+    try {
+   
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
+  const addAgents = async (req: Request, res: Response) => {
+    try {
+   
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
 export default {
-    adminLogin
+    adminLogin,
+    userDetails,
+    request,
+    items,
+    addItems,
+    offers,
+    addOffers,
+    agents,
+    addAgents
 }
