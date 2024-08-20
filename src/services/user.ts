@@ -5,6 +5,11 @@ export const fetchUser = async (email: string) => {
   return user
 }
 
+export const fetchUserById = async (userId: string) => {
+  const user = await User.findOne({ _id:userId })
+  return user
+}
+
 export const addUser = async (name: string, email: string, password: string, mobile: number) => {
   const newUser = await User.create({ name, mobile, password, email })
   return newUser

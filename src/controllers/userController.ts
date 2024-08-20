@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { sendSMS } from '../services/sms';
 import { generateOtp, getSavedOtp, saveOtp } from '../services/otp';
-import { addUser, fetchUser } from '../services/user';
+import { addUser, fetchUser, fetchUserById } from '../services/user';
 import bcrypt from 'bcrypt'
 import { fetchAddressses, manageAddAddress, manageDeleteAddress, manageEditAddress } from '../services/address';
 import { fetchUserCart } from '../services/cart';
@@ -225,7 +225,7 @@ const getCheckoutPageDetails = async (req: Request, res: Response) => {
         cart,
         addresses
       });
-      
+
       return res.status(200).json({
         success: true,
         data: {
@@ -234,8 +234,6 @@ const getCheckoutPageDetails = async (req: Request, res: Response) => {
         }
       });
     }
-
-
 
     return res.status(400).json({
       success: false,
@@ -248,6 +246,32 @@ const getCheckoutPageDetails = async (req: Request, res: Response) => {
 }
 
 
+const fetchProfileData = async (req: Request, res: Response) => {
+  try {
+    const userId = req.params.userId;
+
+    const user = await fetchUserById(userId)
+    if (user) {
+      const addresses = await fetchAddressses(userId)
+      return res.status(200).json({
+        success: false,
+        data: {
+          user,
+          addresses
+        }
+      });
+    }
+
+    return res.status(400).json({
+      success: false,
+      message: 'Unable to fetch profile page details',
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
 
 
 
@@ -259,5 +283,6 @@ export default {
   addAddress,
   deleteAddress,
   editAddress,
-  getCheckoutPageDetails
+  getCheckoutPageDetails,
+  fetchProfileData
 }
