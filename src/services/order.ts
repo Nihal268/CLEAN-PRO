@@ -28,6 +28,7 @@ export const calculateTotalAmount = async (userId: string, deliveryMode: IDelive
 }
 
 // SMALL ISSUES IN THIS PART TO BE CHECKED
+// Need to add a proper item list as needed in the order collection while saving
 export const createOrder = async (userId: string, addressId: string, deliveryMode: IDeliveryModeParams) => {
   const cart = await fetchUserCart(userId)
   console.log('CART CART ', cart);
@@ -38,7 +39,7 @@ export const createOrder = async (userId: string, addressId: string, deliveryMod
   return newOrder
 }
 
-
+// SMALL ISSUES IN THIS PART TO BE CHECKED while fetching all orders the orders the item details need to be populated
 export const fetchAllUserOrders = async (userId: string) => {
   const orders = await Order.find({ userId })
   .populate({
