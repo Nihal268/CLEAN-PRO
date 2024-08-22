@@ -5,6 +5,8 @@ const adminRoute = express.Router();
 
 adminRoute.post('/adminLogin', (req: Request, res: Response) => adminController.adminLogin(req, res))
 
+adminRoute.get('/dashboard', (req: Request, res: Response) => adminController.dashboard(req, res))
+
 adminRoute.get('/userDetails', (req: Request, res: Response) => adminController.userDetails(req, res))
 
 adminRoute.get('/request', (req: Request, res: Response) => adminController.items(req, res))

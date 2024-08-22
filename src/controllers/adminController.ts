@@ -33,6 +33,15 @@ const adminLogin = async (req: Request, res: Response) => {
     }
   };
 
+  const dashboard = async (req: Request, res: Response) => {
+    try {
+   
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
 
   const userDetails = async (req: Request, res: Response) => {
     try {
@@ -151,6 +160,7 @@ const adminLogin = async (req: Request, res: Response) => {
   };
 export default {
     adminLogin,
+    dashboard,
     userDetails,
     request,
     items,
