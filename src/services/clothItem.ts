@@ -1,4 +1,4 @@
-import { ClothItem } from "../models/clothItem"
+import { ClothItem ,IClothItem ,IPrice} from "../models/clothItem"
 
 export const fetchClothesByCategory = async () => {
   const clothItems = await ClothItem.aggregate([
@@ -16,3 +16,23 @@ export const fetchClothesByCategory = async () => {
   
   return clothItems
 }
+
+export const addClothItem = async (name: string, category: string, icon: string, prices: IPrice[]) => {
+  const newClothItem = await ClothItem.create({ name, category, icon, prices });
+  return newClothItem;
+}
+
+
+
+export const fetchClothesByNameAndCategory = async (name: string, category: string) => {
+  const clothItems = await ClothItem.aggregate([
+    {
+      $match: {
+        name: name,
+        category: category
+      }
+    }
+  ]);
+  
+  return clothItems;
+};

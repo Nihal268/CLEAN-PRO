@@ -13,9 +13,9 @@ adminRoute.get('/items', (req: Request, res: Response) => adminController.addIte
 
 adminRoute.get('/addItems', (req: Request, res: Response) => adminController.addItems(req, res))
 
-adminRoute.get('/offers', (req: Request, res: Response) => adminController.addItems(req, res))
+// adminRoute.get('/offers', (req: Request, res: Response) => adminController.addItems(req, res))
 
-adminRoute.get('/addOffers', (req: Request, res: Response) => adminController.addItems(req, res))
+// adminRoute.get('/addOffers', (req: Request, res: Response) => adminController.addItems(req, res))
 
 adminRoute.get('/agents', (req: Request, res: Response) => adminController.addItems(req, res))
 

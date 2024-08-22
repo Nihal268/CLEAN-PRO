@@ -51,4 +51,4 @@ const clothItemSchema : Schema<IClothItem> = new Schema({
 
 const ClothItem: Model<IClothItem> = mongoose.model<IClothItem>('ClothItem', clothItemSchema);
 
-export { ClothItem, IClothItem };
+export { ClothItem, IClothItem ,IPrice};
