@@ -1,14 +1,16 @@
 import { Request, Response } from 'express';
-import { fetchAdmin } from '../services/admin';
-import {  fetchAllUser } from '../services/user';
-import {  fetchClothesByCategory,addClothItem,fetchClothesByNameAndCategory } from '../services/clothItem';
+import { fetchAdmin } from '../services/adminLogin';
+import {  fetchAllUser } from '../services/adminUser';
+import { fetchAllAgent,addAgent,fetchAgent } from '../services/adminAgent';
+import {  fetchAllUserOrders } from '../services/adminOrder';
+import {  fetchAllClothitems,addClothItem,fetchClothesByNameAndCategory } from '../services/adminClothitems';
 
 
 
 
 
-const adminLogin = async (req: Request, res: Response) => {
-    try {
+const adminLogin = async (req: Request, res: Response) => { 
+    try { 
       const {  email } = req.body;
       console.log(email)
 
@@ -65,8 +67,14 @@ const adminLogin = async (req: Request, res: Response) => {
     }
   };
 
+
+
+
   const request = async (req: Request, res: Response) => {
     try {
+      const user = await fetchAllUser()
+      const order = await fetchAllUserOrders()
+
    
     } catch (error) {
       console.error(error);
@@ -77,7 +85,7 @@ const adminLogin = async (req: Request, res: Response) => {
   const items = async (req: Request, res: Response) => {
     try {
       
-     const items = await fetchClothesByCategory()
+     const items = await fetchAllClothitems()
      if(items){
       return res.status(200).json({
           success: true,
@@ -123,6 +131,29 @@ const adminLogin = async (req: Request, res: Response) => {
     }
   };
 
+  const map = async (req: Request, res: Response) => {
+    try {
+  
+
+   
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
+  const addMap = async (req: Request, res: Response) => {
+    try {
+
+      const { place, email, password ,mobile , map } = req.body;
+
+   
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
+
   // const offers = async (req: Request, res: Response) => {
   //   try {
    
@@ -143,7 +174,21 @@ const adminLogin = async (req: Request, res: Response) => {
 
   const agents = async (req: Request, res: Response) => {
     try {
-   
+      const agents = await fetchAllAgent()
+
+      if(agents){
+        return res.status(200).json({
+            success: true,
+            message: `items`,
+            data: agents
+          });
+    }else{
+        return res.status(400).json({
+            success: false,
+            message: `error`,
+            // data: 
+          });
+    }
     } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
@@ -152,7 +197,25 @@ const adminLogin = async (req: Request, res: Response) => {
 
   const addAgents = async (req: Request, res: Response) => {
     try {
+      const { name, email, password ,mobile , map } = req.body;
+
+      const existingAgent = await fetchAgent( email );
+  
+      if (existingAgent) {
+        return res.status(400).json({
+          success: false,
+          message: 'The agent already exist already exists.',
+        });
+      }
    
+      const newAgent = await addAgent(name, email, password, mobile);
+      
+      return res.status(201).json({
+        success: true,
+        message: 'The agent created successfully',
+        data: newAgent,
+      });
+
     } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
@@ -165,8 +228,11 @@ export default {
     request,
     items,
     addItems,
+    map,
+    addMap,
     // offers,
     // addOffers,
     agents,
-    addAgents
+    addAgents,
+   
 }
