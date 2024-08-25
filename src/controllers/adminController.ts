@@ -205,18 +205,17 @@ const adminLogin = async (req: Request, res: Response) => {
 
       const {sl_no, place, latitude_longitude } = req.body;
 
-      const existingmap = await fetchMapByPlace(place)
+      const existingmap = await fetchMapByPlace(place);
 
-      if(existingmap.sl_no == sl_no){
 
       if (existingmap) {
         return res.status(400).json({
           success: false,
           message: 'A map with the same place already exists.',
         });
-      }
+      
     }
-      const newMap = await addMap(place,latitude_longitude)
+      const newMap = await addMap(sl_no , place,latitude_longitude)
 
       return res.status(201).json({
         success: true,
@@ -301,7 +300,7 @@ export default {
     adminLogin,
     dashboard,
     userDetails,
-    userDetailsblocking,
+    userDetailsBlocking,
     request,
     items,
     addItems,

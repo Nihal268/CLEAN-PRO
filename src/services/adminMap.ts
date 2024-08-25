@@ -1,8 +1,8 @@
 import { Map } from "../models/map"
 
 
-export const addMap = async (place: string, latitude_longitude: [number, number][]) => {
-    const newMap = await Map.create({ place, latitude_longitude })
+export const addMap = async (sl_no:number,place: string, latitude_longitude: [number, number][]) => {
+    const newMap = await Map.create({ sl_no , place, latitude_longitude })
     return newMap
   }
 
