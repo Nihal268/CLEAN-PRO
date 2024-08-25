@@ -2,8 +2,8 @@ import { Agent } from "../models/agent"
 
 
 
-export const addAgent = async (name: string, email: string, password: string, mobile: number) => {
-    const newAgent = await Agent.create({ name, mobile, password, email })
+export const addAgent = async (name: string, email: string, password: string, mobile: number,map:[number, number][]) => {
+    const newAgent = await Agent.create({ name, mobile, password, email ,map })
     return newAgent
   }
 

@@ -9,15 +9,17 @@ adminRoute.get('/dashboard', (req: Request, res: Response) => adminController.da
 
 adminRoute.get('/userDetails', (req: Request, res: Response) => adminController.userDetails(req, res))
 
+adminRoute.post('/userDetails/blocking', (req: Request, res: Response) => adminController.userDetailsblocking(req, res))
+
 adminRoute.get('/request', (req: Request, res: Response) => adminController.request(req, res))
 
 adminRoute.get('/items', (req: Request, res: Response) => adminController.items(req, res))
 
-adminRoute.get('/addItems', (req: Request, res: Response) => adminController.addItems(req, res))
+adminRoute.post('/addItems', (req: Request, res: Response) => adminController.addItems(req, res))
 
 adminRoute.get('/map', (req: Request, res: Response) => adminController.map(req, res))
 
-adminRoute.get('/addMap', (req: Request, res: Response) => adminController.addMap(req, res))
+adminRoute.post('/addMap', (req: Request, res: Response) => adminController.addMaps(req, res))
 
 // adminRoute.get('/offers', (req: Request, res: Response) => adminController.addItems(req, res))
 
@@ -25,7 +27,7 @@ adminRoute.get('/addMap', (req: Request, res: Response) => adminController.addMa
 
 adminRoute.get('/agents', (req: Request, res: Response) => adminController.agents(req, res))
 
-adminRoute.get('/addAgents', (req: Request, res: Response) => adminController.addAgents(req, res))
+adminRoute.post('/addAgents', (req: Request, res: Response) => adminController.addAgents(req, res))
 
 
 

@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
 import { fetchAdmin } from '../services/adminLogin';
-import {  fetchAllUser } from '../services/adminUser';
+import {  fetchAllUser ,fetchUserById} from '../services/adminUser';
 import { fetchAllAgent,addAgent,fetchAgent } from '../services/adminAgent';
 import {  fetchAllUserOrders } from '../services/adminOrder';
+import { Order } from "../models/order";
+import {  addMap,fetchMapByPlace,fetchAllMaps } from '../services/adminMap';
 import {  fetchAllClothitems,addClothItem,fetchClothesByNameAndCategory } from '../services/adminClothitems';
 
 
@@ -11,10 +13,13 @@ import {  fetchAllClothitems,addClothItem,fetchClothesByNameAndCategory } from '
 
 const adminLogin = async (req: Request, res: Response) => { 
     try { 
-      const {  email } = req.body;
-      console.log(email)
+      const {  email ,password} = req.body;
+      console.log(email,password)
 
     const admin = await fetchAdmin(email)
+
+    if(admin?.password == password){
+
     //also need agent data too after creating  model do that
     if(admin){
         return res.status(200).json({
@@ -29,6 +34,7 @@ const adminLogin = async (req: Request, res: Response) => {
             // data: agent
           });
     }
+  }
     } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
@@ -67,14 +73,52 @@ const adminLogin = async (req: Request, res: Response) => {
     }
   };
 
-
+  
+  export const userDetailsBlocking = async (req: Request, res: Response) => {
+    try {
+      const {userId} = req.body;
+  
+      const user = await fetchUserById(userId);
+  
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      user.userStatus = !user.userStatus;
+  
+      await user.save();
+  
+      return res.status(200).json({
+        success: true,
+        message: `User ${user.userStatus ? 'blocked' : 'unblocked'}`,
+        data: user
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
 
 
   const request = async (req: Request, res: Response) => {
     try {
-      const user = await fetchAllUser()
-      const order = await fetchAllUserOrders()
-
+      const order = await Order.find()
+      .populate("userId")
+      .populate("addressId");
+      
+      if( order){
+        return res.status(200).json({
+            success: true,
+            message: `user`,
+            data: {order}
+          });
+    }else{
+        return res.status(400).json({
+            success: false,
+            message: `error`,
+            // data: 
+          });
+    }
    
     } catch (error) {
       console.error(error);
@@ -133,8 +177,22 @@ const adminLogin = async (req: Request, res: Response) => {
 
   const map = async (req: Request, res: Response) => {
     try {
-  
 
+      const maps = await fetchAllMaps()
+
+      if(maps){
+        return res.status(200).json({
+            success: true,
+            message: `items`,
+            data: maps
+          });
+    }else{
+        return res.status(400).json({
+            success: false,
+            message: `error`,
+            // data: 
+          });
+    }
    
     } catch (error) {
       console.error(error);
@@ -142,11 +200,29 @@ const adminLogin = async (req: Request, res: Response) => {
     }
   };
 
-  const addMap = async (req: Request, res: Response) => {
+  const addMaps = async (req: Request, res: Response) => {
     try {
 
-      const { place, email, password ,mobile , map } = req.body;
+      const {sl_no, place, latitude_longitude } = req.body;
 
+      const existingmap = await fetchMapByPlace(place)
+
+      if(existingmap.sl_no == sl_no){
+
+      if (existingmap) {
+        return res.status(400).json({
+          success: false,
+          message: 'A map with the same place already exists.',
+        });
+      }
+    }
+      const newMap = await addMap(place,latitude_longitude)
+
+      return res.status(201).json({
+        success: true,
+        message: 'Map created successfully',
+        data: newMap,
+      });
    
     } catch (error) {
       console.error(error);
@@ -208,7 +284,7 @@ const adminLogin = async (req: Request, res: Response) => {
         });
       }
    
-      const newAgent = await addAgent(name, email, password, mobile);
+      const newAgent = await addAgent(name, email, password, mobile,map);
       
       return res.status(201).json({
         success: true,
@@ -225,11 +301,12 @@ export default {
     adminLogin,
     dashboard,
     userDetails,
+    userDetailsblocking,
     request,
     items,
     addItems,
     map,
-    addMap,
+    addMaps,
     // offers,
     // addOffers,
     agents,

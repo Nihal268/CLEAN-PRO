@@ -5,6 +5,7 @@ interface IUser extends Document {
   mobile: number;
   email: string;
   password: string;
+  userStatus:boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -15,6 +16,7 @@ const userSchema: Schema<IUser> = new Schema(
     mobile: { type: Number, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    userStatus:{type: Boolean, default: false}
   },
   {
     timestamps: true
