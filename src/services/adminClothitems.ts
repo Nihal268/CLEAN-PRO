@@ -8,14 +8,10 @@ export const addClothItem = async (name: string, category: string, icon: string,
 
 
 export const fetchClothesByNameAndCategory = async (name: string, category: string) => {
-  const clothItems = await ClothItem.aggregate([
-    {
-      $match: {
-        name: name,
-        category: category
-      }
-    }
-  ]);
+  const clothItems = await ClothItem.find({
+    name: name,
+    category: category
+  });
   
   return clothItems;
 };

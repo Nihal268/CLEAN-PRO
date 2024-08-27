@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 import { Map } from "../models/map"
 
 
@@ -7,14 +8,7 @@ export const addMap = async (sl_no:number,place: string, latitude_longitude: [nu
   }
 
   export const fetchMapByPlace = async (place: string) => {
-    const map = await Map.aggregate([
-      {
-        $match: {
-          place: place
-        }
-      }
-    ]);
-    
+    const map = await Map.findOne({ place: place });
     return map;
   };
 
@@ -23,3 +17,12 @@ export const addMap = async (sl_no:number,place: string, latitude_longitude: [nu
     const map = await Map.find()
     return map
   }
+
+  export const fetchMapById = async (mapId: string) => {
+    try {
+      return await Map.findById(mapId).exec();
+    } catch (error) {
+      console.error('Error fetching map by ID:', error);
+      return null;
+    }
+  };

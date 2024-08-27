@@ -4,8 +4,9 @@ import {  fetchAllUser ,fetchUserById} from '../services/adminUser';
 import { fetchAllAgent,addAgent,fetchAgent } from '../services/adminAgent';
 import {  fetchAllUserOrders } from '../services/adminOrder';
 import { Order } from "../models/order";
-import {  addMap,fetchMapByPlace,fetchAllMaps } from '../services/adminMap';
+import {  addMap,fetchMapByPlace,fetchAllMaps,fetchMapById } from '../services/adminMap';
 import {  fetchAllClothitems,addClothItem,fetchClothesByNameAndCategory } from '../services/adminClothitems';
+import { ObjectId } from 'mongoose';
 
 
 
@@ -74,7 +75,7 @@ const adminLogin = async (req: Request, res: Response) => {
   };
 
   
-  export const userDetailsBlocking = async (req: Request, res: Response) => {
+  export const userDetailsblocking = async (req: Request, res: Response) => {
     try {
       const {userId} = req.body;
   
@@ -153,9 +154,9 @@ const adminLogin = async (req: Request, res: Response) => {
     try {
       const { name, category, icon, prices } = req.body;
   
-      const existingItem = await fetchClothesByNameAndCategory( name, category );
+      const existingItems = await fetchClothesByNameAndCategory(name, category);
   
-      if (existingItem) {
+      if (existingItems.length > 0) {
         return res.status(400).json({
           success: false,
           message: 'A cloth item with the same name and category already exists.',
@@ -163,9 +164,9 @@ const adminLogin = async (req: Request, res: Response) => {
       }
   
       const newClothItem = await addClothItem(name, category, icon, prices);
-      
+  
       return res.status(201).json({
-        success: true,
+        success: true, 
         message: 'Cloth item created successfully',
         data: newClothItem,
       });
@@ -174,6 +175,7 @@ const adminLogin = async (req: Request, res: Response) => {
       res.status(500).send('Internal Server Error');
     }
   };
+  
 
   const map = async (req: Request, res: Response) => {
     try {
@@ -272,35 +274,47 @@ const adminLogin = async (req: Request, res: Response) => {
 
   const addAgents = async (req: Request, res: Response) => {
     try {
-      const { name, email, password ,mobile , map } = req.body;
-
-      const existingAgent = await fetchAgent( email );
+      const { name, email, password, mobile, map  } = req.body; 
+      console.log(map)
   
+      const existingAgent = await fetchAgent(email);
       if (existingAgent) {
         return res.status(400).json({
           success: false,
-          message: 'The agent already exist already exists.',
+          message: 'The agent already exists.',
         });
       }
+  
+      const Map = await fetchMapById(map);  
+      if (!Map) {
+        return res.status(404).json({
+          success: false,
+          message: 'Map not found.',
+        });
+      }
+      const mapID = Map._id as ObjectId
+      console.log(mapID,"ppppp")
+      const newAgent = await addAgent(name, email, password, mobile, mapID );
+      console.log(newAgent)
    
-      const newAgent = await addAgent(name, email, password, mobile,map);
-      
+  
       return res.status(201).json({
         success: true,
-        message: 'The agent created successfully',
+        message: 'The agent was created successfully',
         data: newAgent,
       });
-
+  
     } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
     }
   };
+  
 export default {
     adminLogin,
     dashboard,
     userDetails,
-    userDetailsBlocking,
+    userDetailsblocking, 
     request,
     items,
     addItems,
