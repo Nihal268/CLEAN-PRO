@@ -15,7 +15,7 @@ export const calculateTotalAmount = async (userId: string, deliveryMode: IDelive
   for (const item of cartItems) {
     const service = item.service;
     const clothItem = item.clothItemId as unknown as IClothItem
-    const price = clothItem.prices[0][service]
+    const price = clothItem.prices[service]
     const itemTotal = price * item.quantity
     totalAmount += itemTotal;
   }
@@ -35,10 +35,10 @@ export const createOrder = async (userId: string, addressId: string, deliveryMod
   if (clothItems) {
     const itemsWithPrices = clothItems.map(item => {
       const clothItem = item.clothItemId as unknown as IClothItem
-      const price = clothItem.prices[0][item.service];
+      const price = clothItem.prices[item.service];
 
       return {
-        clothItemId:clothItem._id,
+        clothItemId: clothItem._id,
         name: clothItem.name,
         category: clothItem.category,
         quantity: item.quantity,
@@ -59,3 +59,14 @@ export const fetchAllUserOrders = async (userId: string) => {
   const orders = await Order.find({ userId })
   return orders
 }
+
+export const getAllOrders = async () => {
+  const orders = Order.find()
+    .populate("userId")
+    .populate("addressId")
+    .sort({ createdAt: -1 });
+  return orders
+}
+
+
+

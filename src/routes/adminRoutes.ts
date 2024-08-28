@@ -3,13 +3,13 @@ import adminController from "../controllers/adminController"
 
 const adminRoute = express.Router();
 
-adminRoute.post('/adminLogin', (req: Request, res: Response) => adminController.adminLogin(req, res))
+adminRoute.post('/adminLogin', (req: Request, res: Response) => adminController.adminLogin(req, res))  //needs completeion
 
-adminRoute.get('/dashboard', (req: Request, res: Response) => adminController.dashboard(req, res))
+adminRoute.get('/dashboard', (req: Request, res: Response) => adminController.dashboard(req, res))  //needs completeion
 
-adminRoute.get('/userDetails', (req: Request, res: Response) => adminController.userDetails(req, res))
+adminRoute.get('/userDetails', (req: Request, res: Response) => adminController.usersDetails(req, res))  //DONE
 
-adminRoute.post('/userDetails/blocking', (req: Request, res: Response) => adminController.userDetailsblocking(req, res))
+adminRoute.post('/userDetails/blocking', (req: Request, res: Response) => adminController.userDetailsblocking(req, res))  //DONE
 
 adminRoute.get('/request', (req: Request, res: Response) => adminController.request(req, res))
 

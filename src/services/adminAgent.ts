@@ -4,11 +4,11 @@ import { Agent } from "../models/agent"
 
 
 export const addAgent = async (name: string, email: string, password: string, mobile: number, map:ObjectId) => {
-    const newAgent = await Agent.create({ name, mobile, password, email ,  map })
+    const newAgent = await Agent.create({ name, mobile, password, email , map })
     return newAgent
   }
 
-  export const fetchAllAgent = async () => {
+  export const fetchAllAgents = async () => {
     const agent = await Agent.find()
     return agent
   }

@@ -2,7 +2,6 @@ import { Request, Response } from 'express';
 import { sendSMS } from '../services/sms';
 import { generateOtp, getSavedOtp, saveOtp } from '../services/otp';
 import { addUser, fetchUser, fetchUserById } from '../services/user';
-import bcrypt from 'bcrypt'
 import { fetchAddressses, manageAddAddress, manageDeleteAddress, manageEditAddress } from '../services/address';
 import { fetchUserCart } from '../services/cart';
 
@@ -76,15 +75,6 @@ const verifyOtp = async (req: Request, res: Response) => {
   }
 };
 
-const securePassword = async (password: string) => {
-  try {
-    const passwordHash = await bcrypt.hash(password, 10);
-    return passwordHash;
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 
 const signUp = async (req: Request, res: Response) => {
   try {
@@ -97,8 +87,6 @@ const signUp = async (req: Request, res: Response) => {
       });
     }
 
-    const hashedPassword = await securePassword(password)
-
     const userExist = await fetchUser(email)
     if (userExist) {
       return res.status(400).json({
@@ -108,7 +96,7 @@ const signUp = async (req: Request, res: Response) => {
       });
     }
 
-    const savedUser = await addUser(name, email, hashedPassword as string, mobile)
+    const savedUser = await addUser(name, email, mobile)
     if (savedUser) {
       return res.status(200).json({
         success: true,
@@ -271,8 +259,6 @@ const fetchProfileData = async (req: Request, res: Response) => {
     res.status(500).send('Internal Server Error');
   }
 }
-
-
 
 
 
