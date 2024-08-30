@@ -12,12 +12,13 @@ import { GiveOrdersMonthlyEntry } from '../services/adminOrder';
 
   const createAdmin = async (req: Request, res: Response) => {
   try {
- 
+    const hashedPassword = await securePassword('nihal');
+
     const admin = new Admin({
       name: 'Muhammed Nihal',
       mobile: 1234567890,
-      email: 'nihalmuhaednihal@gmail.com',
-      password: 'securepassword123',
+      email: 'nihal@gmail.com',
+      password: hashedPassword
     });
 
     const savedAdmin = await admin.save();
@@ -51,9 +52,9 @@ const adminLogin = async (req: Request, res: Response) => {
     const { email, password } = req.body;
     console.log(email, password)
 
-    const admin = await fetchAdmin(email) as IAdmin
+    const admin = await fetchAdmin(email) 
     if (admin) {
-      const correctPassword = await comparePassword(admin.password, password)
+      const correctPassword = await comparePassword(password,admin.password)
       if (correctPassword) {
         return res.status(200).json({
           success: true,
@@ -74,7 +75,6 @@ const adminLogin = async (req: Request, res: Response) => {
         }
       }
     }
-
     return res.status(400).json({
       success: false,
       message: `Incorrect login details entered`,
