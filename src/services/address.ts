@@ -45,4 +45,9 @@ export const fetchAddressses = async (userId: string) => {
   return addresses
 }
 
+export const getAddressById = async (addressId: string) => {
+  const addresse = await Address.findOne({ _id:addressId })
+  return addresse
+}
+
 

@@ -21,7 +21,7 @@ const agentSchema: Schema<IAgent> = new Schema(
       ref: 'Map',
       required: true
     }
-   
+
   },
   {
     timestamps: true

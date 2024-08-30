@@ -3,7 +3,10 @@ import { ICartItem } from "../models/cart";
 import { IClothItem } from "../models/clothItem";
 import { DeliveryMode, IDeliveryMode } from "../models/deliveryMode";
 import { Order } from "../models/order";
+import { getAddressById } from "./address";
+import { findAgentByMapId } from "./adminAgent";
 import { fetchUserCartItems } from "./cart";
+import { findMapContainingCoordinates } from "./map";
 
 
 
@@ -47,9 +50,20 @@ export const createOrder = async (userId: string, addressId: string, deliveryMod
       };
     })
     console.log(itemsWithPrices)
-
     const totalPrice = await calculateTotalAmount(userId, deliveryMode)
-    const newOrder = await Order.create({ userId, addressId, deliveryMode, totalPrice, clothItems: itemsWithPrices })
+
+    // finding the agent for this order
+    const address = await getAddressById(addressId)
+    if (!address) { return false }
+
+    const latitudeLongitude = address.location.coordinates;
+    const mapId = await findMapContainingCoordinates(latitudeLongitude) as string
+    if (!mapId) { return false }
+
+    const agent = await findAgentByMapId(mapId)
+    if (!agent) { return false }
+
+    const newOrder = await Order.create({ userId, addressId, deliveryMode, totalPrice, clothItems: itemsWithPrices, agentId: agent._id })
     return newOrder
   }
 }
