@@ -5,6 +5,7 @@ import cors from 'cors';
 import { connectToDatabase } from './db';
 import userRoute from './routes/userRoutes';
 import adminRoute from './routes/adminRoutes';
+import agentRoute from './routes/agentRoute'
 
 
 
@@ -37,6 +38,7 @@ app.use("/api/user", userRoute);
 
 app.use("/api/admin", adminRoute);
 
+app.use("/api/agent", agentRoute);
 
 
 app.listen(port, () => {

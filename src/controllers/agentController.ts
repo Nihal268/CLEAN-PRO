@@ -1,5 +1,8 @@
 import { Request, Response } from 'express';
 import { AgentOrders,fetchOrderById} from '../services/agentRequest';
+import { sendSMS } from '../services/notifyToUser';
+
+
 
 const agentRequestpage = async (req: Request, res: Response) => {
     try {
@@ -70,16 +73,42 @@ const agentRequestpage = async (req: Request, res: Response) => {
         message: `error`,
       });
     }
-
     } catch (error) {
       console.error(error);
       res.status(500).send('Internal Server Error');
     }
   };
 
+  const notifyLaundryPickUp = async (req: Request, res: Response) => {
+    try {
+     
+     const {email} = req.body;
+
+     if (!email) {
+      return res.status(400).send('Email is required');
+    }
+console.log(1)
+    const emailSent = await sendSMS(email); 
+    console.log(12)
+
+    if (emailSent) {
+      res.status(200).send('Notification sent successfully');
+      console.log(13)
+
+    } else {
+      res.status(500).send('Failed to send notification');
+      console.log(14)
+
+    }
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  };
 
   export default {
     agentRequestpage,
     acceptORreject,
-    printInvoice
+    printInvoice,
+    notifyLaundryPickUp
   }
