@@ -20,4 +20,3 @@ export const addUser = async (name: string, email: string, mobile: number) => {
   return newUser
 }
 
-

@@ -3,6 +3,9 @@ import adminController from "../controllers/adminController"
 
 const adminRoute = express.Router();
 
+adminRoute.post('/createAdmin', (req: Request, res: Response) => adminController.createAdmin(req, res))  //needs completeion
+
+
 adminRoute.post('/adminLogin', (req: Request, res: Response) => adminController.adminLogin(req, res))  //needs completeion
 
 adminRoute.get('/dashboard', (req: Request, res: Response) => adminController.dashboard(req, res))  //needs completeion
@@ -13,10 +16,10 @@ adminRoute.post('/userDetails/blocking', (req: Request, res: Response) => adminC
 
 adminRoute.get('/request', (req: Request, res: Response) => adminController.request(req, res))
 
-adminRoute.get('/items', (req: Request, res: Response) => adminController.items(req, res))
+adminRoute.get('/items', (req: Request, res: Response) => adminController.items(req, res)) 
 
 adminRoute.post('/addItems', (req: Request, res: Response) => adminController.addItems(req, res))
-
+ 
 adminRoute.get('/map', (req: Request, res: Response) => adminController.map(req, res))
 
 adminRoute.post('/addMap', (req: Request, res: Response) => adminController.addMaps(req, res))

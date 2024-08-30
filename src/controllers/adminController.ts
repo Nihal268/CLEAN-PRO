@@ -6,9 +6,26 @@ import { addMap, fetchMapByPlace, fetchAllMaps, fetchMapById } from '../services
 import { fetchAllClothitems, addClothItem, fetchClothesByNameAndCategory } from '../services/adminClothitems';
 import { ObjectId } from 'mongoose';
 import bcrypt from 'bcrypt'
-import { IAdmin } from '../models/admin';
+import { IAdmin ,Admin} from '../models/admin';
 import { getAllOrders } from '../services/order';
+import { GiveOrdersMonthlyEntry } from '../services/adminOrder';
 
+  const createAdmin = async (req: Request, res: Response) => {
+  try {
+ 
+    const admin = new Admin({
+      name: 'Muhammed Nihal',
+      mobile: 1234567890,
+      email: 'nihalmuhaednihal@gmail.com',
+      password: 'securepassword123',
+    });
+
+    const savedAdmin = await admin.save();
+    console.log('Admin saved successfully:', savedAdmin);
+  } catch (error) {
+    console.error('Error saving admin:', error);
+  }
+}
 
 const comparePassword = async (password: string, hashedPassword: string) => {
   try {
@@ -71,6 +88,9 @@ const adminLogin = async (req: Request, res: Response) => {
 
 const dashboard = async (req: Request, res: Response) => {
   try {
+       const MonthlyUsers =  await GiveOrdersMonthlyEntry()
+
+      
 
   } catch (error) {
     console.error(error);
@@ -332,6 +352,8 @@ const addAgents = async (req: Request, res: Response) => {
 };
 
 export default {
+
+  createAdmin,
   adminLogin,
   dashboard,
   usersDetails,
