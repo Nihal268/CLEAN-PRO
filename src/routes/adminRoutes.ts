@@ -3,7 +3,6 @@ import adminController from "../controllers/adminController"
 
 const adminRoute = express.Router();
 
-adminRoute.post('/createAdmin', (req: Request, res: Response) => adminController.createAdmin(req, res))  //needs completeion
 
 adminRoute.post('/adminLogin', (req: Request, res: Response) => adminController.adminLogin(req, res))  //needs completeion
 
