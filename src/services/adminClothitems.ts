@@ -5,7 +5,7 @@ function capitalizeFirstWord(sentence: string) {
 }
 
 
-export const addClothItem = async (name: string, category: string, icon: any, prices: IPrice) => {
+export const addClothItem = async (name: string, category: string, icon: string, prices: IPrice) => {
   const nameTitleCased = capitalizeFirstWord(name)
   const categoryTitleCased = capitalizeFirstWord(category)
   const newClothItem = await ClothItem.create({ name: nameTitleCased, category: categoryTitleCased, icon, prices });

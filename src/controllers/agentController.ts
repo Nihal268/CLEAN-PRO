@@ -9,7 +9,7 @@ const agentRequestpage = async (req: Request, res: Response) => {
     
      const { agentid }= req.body; 
 
-     const Agentorders = await AgentOrders(agentid)
+     const Agentorders = await AgentOrders(agentid)    
 
      if (Agentorders) {
       return res.status(200).json({

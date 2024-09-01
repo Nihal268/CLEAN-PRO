@@ -178,16 +178,16 @@ const items = async (req: Request, res: Response) => {
 
 export const addItems = async (req: Request, res: Response) => {
   try {
-    const { name, category, icons, prices } = req.body;
-
-    const icon: string = String(icons);
-
+    const { name, category, icon, prices } = req.body;
+// console.log(icons)
+    // const icon: string = String(icons);
+// console.log(icon)
     const existingItem = await fetchClothesByNameAndCategory(name, category);
 
     if (existingItem) {
       return res.status(400).json({
         success: false,
-        message: 'A cloth item with the same name and category already exists.',
+        message: 'A cloth item with the same name and category already exists.',  
       });
     }
 
@@ -199,7 +199,7 @@ export const addItems = async (req: Request, res: Response) => {
       data: newClothItem,
     });
   } catch (error) {
-    console.error(error);
+    console.error(error); 
     res.status(500).send('Internal Server Error');
   }
 };
