@@ -178,7 +178,9 @@ const items = async (req: Request, res: Response) => {
 
 export const addItems = async (req: Request, res: Response) => {
   try {
-    const { name, category, icon, prices } = req.body;
+    const { name, category, icons, prices } = req.body;
+
+    const icon: string = String(icons);
 
     const existingItem = await fetchClothesByNameAndCategory(name, category);
 
