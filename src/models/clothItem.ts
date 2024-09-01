@@ -9,7 +9,7 @@ interface IPrice {
 interface IClothItem extends Document {
   name: string;
   category: string;
-  icon: string;
+  icon: number[];
   prices: IPrice;
 }
 
@@ -25,7 +25,7 @@ const clothItemSchema: Schema<IClothItem> = new Schema({
     trim: true
   },
   icon: {
-    type: String,
+    type: [Number],
     required: true,
     trim: true
   },

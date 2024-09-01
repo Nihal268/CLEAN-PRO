@@ -181,7 +181,7 @@ export const addItems = async (req: Request, res: Response) => {
     const { name, category, icon, prices } = req.body;
 // console.log(icons)
     // const icon: string = String(icons);
-// console.log(icon)
+console.log(icon)
     const existingItem = await fetchClothesByNameAndCategory(name, category);
 
     if (existingItem) {
