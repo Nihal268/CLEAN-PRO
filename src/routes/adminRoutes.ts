@@ -18,9 +18,14 @@ adminRoute.get('/items', (req: Request, res: Response) => adminController.items(
 
 adminRoute.post('/addItems', (req: Request, res: Response) => adminController.addItems(req, res))
 
+adminRoute.post('/deleteItems', (req: Request, res: Response) => adminController.deleteItems(req, res))
+
 adminRoute.get('/map', (req: Request, res: Response) => adminController.map(req, res))
 
 adminRoute.post('/addMap', (req: Request, res: Response) => adminController.addMaps(req, res))
+
+adminRoute.post('/deleteMap', (req: Request, res: Response) => adminController.deleteMaps(req, res))
+
 
 // adminRoute.get('/offers', (req: Request, res: Response) => adminController.addItems(req, res))
 
@@ -29,6 +34,9 @@ adminRoute.post('/addMap', (req: Request, res: Response) => adminController.addM
 adminRoute.get('/agents', (req: Request, res: Response) => adminController.agents(req, res))
 
 adminRoute.post('/addAgents', (req: Request, res: Response) => adminController.addAgents(req, res))
+
+adminRoute.post('/deleteAgents', (req: Request, res: Response) => adminController.deleteAgents(req, res))
+
 
 
 

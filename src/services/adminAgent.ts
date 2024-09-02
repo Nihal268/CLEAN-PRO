@@ -13,6 +13,12 @@ export const fetchAllAgents = async () => {
   return agent
 }
 
+export const deleteAgent = async (id: ObjectId) => {
+
+  const result = await Agent.findByIdAndDelete(id);
+ return result
+};
+
 export const fetchAgent = async (email: string) => {
   const agent = await Agent.findOne({ email })
   return agent

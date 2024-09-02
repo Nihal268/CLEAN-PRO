@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 import { ClothItem, IClothItem, IPrice } from "../models/clothItem"
 
 function capitalizeFirstWord(sentence: string) {
@@ -12,6 +13,11 @@ export const addClothItem = async (name: string, category: string, icon: number[
   return newClothItem;
 }
 
+export const deleteClothItem = async (id: ObjectId) => {
+
+    const result = await ClothItem.findByIdAndDelete(id);
+   return result
+};
 
 export const fetchClothesByNameAndCategory = async (name: string, category: string) => {
 

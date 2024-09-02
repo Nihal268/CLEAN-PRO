@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { fetchAdmin } from '../services/adminLogin';
 import { fetchAllUser, fetchUserById } from '../services/adminUser';
-import { fetchAllAgents, addAgent, fetchAgent } from '../services/adminAgent';
-import { addMap, fetchMapByPlace, fetchAllMaps, fetchMapById } from '../services/adminMap';
-import { fetchAllClothitems, addClothItem, fetchClothesByNameAndCategory } from '../services/adminClothitems';
+import { fetchAllAgents, addAgent, fetchAgent ,deleteAgent} from '../services/adminAgent';
+import { addMap, fetchMapByPlace, fetchAllMaps, fetchMapById ,deleteMap} from '../services/adminMap';
+import { fetchAllClothitems, addClothItem, fetchClothesByNameAndCategory ,deleteClothItem} from '../services/adminClothitems';
 import { ObjectId } from 'mongoose';
 import bcrypt from 'bcrypt'
 import { IAdmin ,Admin} from '../models/admin';
@@ -186,7 +186,7 @@ console.log(icon)
 
     if (existingItem) {
       return res.status(400).json({
-        success: false,
+        success: false,  
         message: 'A cloth item with the same name and category already exists.',  
       });
     }
@@ -201,6 +201,28 @@ console.log(icon)
   } catch (error) {
     console.error(error); 
     res.status(500).send('Internal Server Error');
+  }
+};
+
+export const deleteItems = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.body;
+    const deleteitems= await deleteClothItem(id);
+
+    if (deleteitems) {
+      return res.status(200).json({
+        success: true,
+        message: `map with ID ${id} deleted successfully.`,
+        data: deleteitems,
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: `map with ID ${id} not found.`,
+      });
+    }
+  } catch (error) {
+   console.log('internal server error message :'+error)
   }
 };
 
@@ -256,6 +278,28 @@ const addMaps = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
+  }
+};
+
+export const deleteMaps = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.body;
+    const deletemaps= await deleteMap(id);
+
+    if (deletemaps) {
+      return res.status(200).json({
+        success: true,
+        message: `map with ID ${id} deleted successfully.`,
+        data: deletemaps,
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: `map with ID ${id} not found.`,
+      });
+    }
+  } catch (error) {
+   console.log('internal server error message :'+error)
   }
 };
 
@@ -337,6 +381,29 @@ const addAgents = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteAgents = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.body;
+    const deleteagents = await deleteAgent(id);
+
+    if (deleteagents) {
+      return res.status(200).json({
+        success: true,
+        message: ` item with ID ${id} deleted successfully.`,
+        data: deleteagents,
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: ` item with ID ${id} not found.`,
+      });
+    }
+  } catch (error) {
+   console.log('internal server error message :'+error)
+  }
+};
+
+
 export default {
 
   adminLogin,
@@ -346,11 +413,14 @@ export default {
   request,
   items,
   addItems,
+  deleteItems,
   map,
   addMaps,
+  deleteMaps,
   // offers,
   // addOffers,
   agents,
   addAgents,
+  deleteAgents
 
 }

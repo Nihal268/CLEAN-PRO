@@ -12,6 +12,11 @@ export const addMap = async (sl_no:number,place: string, latitude_longitude: [nu
     return map;
   };
 
+  export const deleteMap = async (id: ObjectId) => {
+
+    const result = await Map.findByIdAndDelete(id);
+   return result
+};
   
   export const fetchAllMaps = async () => {
     const map = await Map.find()
