@@ -49,7 +49,7 @@ const adminLogin = async (req: Request, res: Response) => {
     } else {
       const agent = await fetchAgent(email)
       if (agent) {
-        const correctPassword = await comparePassword(agent.password, password)
+        const correctPassword = await comparePassword( password,agent.password)
         if (correctPassword) {
           return res.status(200).json({
             success: true,
