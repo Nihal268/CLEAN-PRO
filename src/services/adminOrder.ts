@@ -31,3 +31,14 @@ export const GiveOrdersMonthlyEntry = async () => {
   console.log(result);
   return result
   }
+
+  
+  export const findOrderById = async (orderId:string) => {
+    const orders = await Order.findByIdAndUpdate(
+      orderId,
+      { status: 'cancelled' },
+      { new: true } 
+    );
+
+    return orders
+  }

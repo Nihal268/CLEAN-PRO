@@ -8,7 +8,7 @@ import { ObjectId } from 'mongoose';
 import bcrypt from 'bcrypt'
 import { IAdmin ,Admin} from '../models/admin';
 import { getAllOrders } from '../services/order';
-import { GiveOrdersMonthlyEntry } from '../services/adminOrder';
+import { GiveOrdersMonthlyEntry ,findOrderById} from '../services/adminOrder';
 
 
 
@@ -403,7 +403,29 @@ export const deleteAgents = async (req: Request, res: Response) => {
   }
 };
 
+export const rejectOrder = async (req: Request, res: Response)=> {
+  try {
+    const { orderId } = req.body;
 
+    const updatedOrder = await findOrderById(orderId)
+
+
+    // If the order doesn't exist, return a 404 error
+    if (!updatedOrder) {
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found.',
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: 'Order status updated to cancelled.',
+      data: updatedOrder,
+    });
+  } catch (error) {
+    console.error('Error cancelling the order:', error);
+  }
+};
 export default {
 
   adminLogin,
@@ -421,6 +443,7 @@ export default {
   // addOffers,
   agents,
   addAgents,
-  deleteAgents
+  deleteAgents,
+  rejectOrder
 
 }

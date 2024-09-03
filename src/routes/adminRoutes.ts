@@ -37,6 +37,9 @@ adminRoute.post('/addAgents', (req: Request, res: Response) => adminController.a
 
 adminRoute.post('/deleteAgents', (req: Request, res: Response) => adminController.deleteAgents(req, res))
 
+adminRoute.post('/rejectOrder', (req: Request, res: Response) => adminController.rejectOrder(req, res))
+
+
 
 
 
