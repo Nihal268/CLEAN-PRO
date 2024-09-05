@@ -39,11 +39,11 @@ adminRoute.post('/deleteAgents', (req: Request, res: Response) => adminControlle
 
 adminRoute.post('/rejectOrder', (req: Request, res: Response) => adminController.rejectOrder(req, res))
 
+adminRoute.post('/editAgent', (req: Request, res: Response) => adminController.editAgents(req, res))
 
+adminRoute.post('/editMap', (req: Request, res: Response) => adminController.editMaps(req, res))
 
-
-
-
+adminRoute.post('/editItem', (req: Request, res: Response) => adminController.editClothItems(req, res))
 
 
 export default adminRoute;

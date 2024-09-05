@@ -7,6 +7,18 @@ export const addMap = async (sl_no:number,place: string, latitude_longitude: [nu
     return newMap
   }
 
+  export const editMap = async (userId:string,sl_no?:number,place?: string, latitude_longitude?: [number, number][]) => {
+    const editMap = await Map.findByIdAndUpdate(
+      userId, 
+      {
+        sl_no, 
+        place, 
+        latitude_longitude
+      }           
+    );
+     return editMap
+  }
+
   export const fetchMapByPlace = async (place: string) => {
     const map = await Map.findOne({ place: place });
     return map;

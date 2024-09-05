@@ -13,6 +13,19 @@ export const addClothItem = async (name: string, category: string, icon: number[
   return newClothItem;
 }
 
+export const editClothItem = async (userId:string,name: string, category: string, icon: number[], prices: IPrice) => {
+  const editMap = await ClothItem.findByIdAndUpdate(
+    userId, 
+    {
+      name, 
+      category, 
+      icon,
+      prices
+    }           
+  );
+   return editMap
+}
+
 export const deleteClothItem = async (id: ObjectId) => {
 
     const result = await ClothItem.findByIdAndDelete(id);

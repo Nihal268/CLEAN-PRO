@@ -1,14 +1,16 @@
 import { Request, Response } from 'express';
 import { fetchAdmin } from '../services/adminLogin';
 import { fetchAllUser, fetchUserById } from '../services/adminUser';
-import { fetchAllAgents, addAgent, fetchAgent ,deleteAgent} from '../services/adminAgent';
-import { addMap, fetchMapByPlace, fetchAllMaps, fetchMapById ,deleteMap} from '../services/adminMap';
-import { fetchAllClothitems, addClothItem, fetchClothesByNameAndCategory ,deleteClothItem} from '../services/adminClothitems';
+import { fetchAllAgents, addAgent, fetchAgent ,deleteAgent,editAgent} from '../services/adminAgent';
+import { addMap, fetchMapByPlace, fetchAllMaps, fetchMapById ,deleteMap,editMap} from '../services/adminMap';
+import { fetchAllClothitems, addClothItem, fetchClothesByNameAndCategory ,deleteClothItem,editClothItem} from '../services/adminClothitems';
 import { ObjectId } from 'mongoose';
 import bcrypt from 'bcrypt'
 import { IAdmin ,Admin} from '../models/admin';
 import { getAllOrders } from '../services/order';
 import { GiveOrdersMonthlyEntry ,findOrderById} from '../services/adminOrder';
+import { sendSMS } from '../services/notifyToUser';
+
 
 
 
@@ -426,6 +428,108 @@ export const rejectOrder = async (req: Request, res: Response)=> {
     console.error('Error cancelling the order:', error);
   }
 };
+
+
+const notifyLaundryPickUp = async (req: Request, res: Response) => {
+  try {
+   
+   const {email} = req.body;
+
+   if (!email) {
+    return res.status(400).send('Email is required');
+  }
+  const emailSent = await sendSMS(email); 
+
+  if (emailSent) {
+    res.status(200).send('Notification sent successfully');
+
+  } else {
+    res.status(500).send('Failed to send notification');
+
+  }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+const editAgents = async (req: Request, res: Response) => {
+  try {
+
+   const {id,name,age,email,password,map} = req.body;
+
+  //  const editagent = await editAgent(id,name,age,email,password,map);
+   const editagent = await editAgent(id, name, age, email, password, map);
+
+
+   if (!editagent) {
+    return res.status(400).send('Email is required');
+  }
+
+  if (editagent) {
+    res.status(200).send('Notification sent successfully');
+
+  } else {
+    res.status(500).send('Failed to send notification');
+
+  }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+const editMaps = async (req: Request, res: Response) => {
+  try {
+
+   const {userId,sl_no,place, latitude_longitude} = req.body;
+
+  //  const editagent = await editAgent(id,name,age,email,password,map);
+   const editagent = await editMap(userId,sl_no,place, latitude_longitude);
+
+
+   if (!editagent) {
+    return res.status(400).send('Email is required');
+  }
+
+  if (editagent) {
+    res.status(200).send('Notification sent successfully');
+
+  } else {
+    res.status(500).send('Failed to send notification');
+
+  }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+const editClothItems = async (req: Request, res: Response) => {
+  try {
+
+   const {userId,name, category, icon , prices} = req.body;
+
+  //  const editagent = await editAgent(id,name,age,email,password,map);
+   const editagent = await editClothItem(userId,name, category, icon , prices);
+
+
+   if (!editagent) {
+    return res.status(400).send('Email is required');
+  }
+
+  if (editagent) {
+    res.status(200).send('Notification sent successfully');
+
+  } else {
+    res.status(500).send('Failed to send notification');
+
+  }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
 export default {
 
   adminLogin,
@@ -444,6 +548,10 @@ export default {
   agents,
   addAgents,
   deleteAgents,
-  rejectOrder
+  rejectOrder,
+  notifyLaundryPickUp,
+  editAgents,
+   editMaps,
+  editClothItems
 
 }

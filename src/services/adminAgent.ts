@@ -8,6 +8,20 @@ export const addAgent = async (name: string, email: string, password: string, mo
   return newAgent
 }
 
+export const editAgent = async (userId: string, name?: string, age?: number, email?: string, password?:string, map?:ObjectId) => {
+  const editAgent = await Agent.findByIdAndUpdate(
+    userId, 
+    {
+      name, 
+      age, 
+      email, 
+      password, 
+      map 
+    }           
+  );
+   return editAgent
+}
+
 export const fetchAllAgents = async () => {
   const agent = await Agent.find()
   return agent

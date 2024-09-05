@@ -87,17 +87,13 @@ const agentRequestpage = async (req: Request, res: Response) => {
      if (!email) {
       return res.status(400).send('Email is required');
     }
-console.log(1)
     const emailSent = await sendSMS(email); 
-    console.log(12)
 
     if (emailSent) {
       res.status(200).send('Notification sent successfully');
-      console.log(13)
 
     } else {
       res.status(500).send('Failed to send notification');
-      console.log(14)
 
     }
     } catch (error) {
