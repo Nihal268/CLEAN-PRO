@@ -22,6 +22,21 @@ export const editAgent = async (userId: string, name?: string, age?: number, ema
    return editAgent
 }
 
+export const searchAgents = async ( name?: string, email?: string) => {
+  const searchCriteria: any = {};
+
+  if (name) {
+    searchCriteria.name = { $regex: new RegExp(name, 'i') };
+  }else if (email) {
+    searchCriteria.email = { $regex: new RegExp(email, 'i') };
+  }else {
+    return "No such order available"
+  }
+
+  const searchResult = await Agent.find(searchCriteria);
+   return searchResult
+}
+
 export const fetchAllAgents = async () => {
   const agent = await Agent.find()
   return agent

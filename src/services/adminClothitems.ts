@@ -26,6 +26,22 @@ export const editClothItem = async (userId:string,name: string, category: string
    return editMap
 }
 
+
+export const searchItems = async ( name?: string, category?: string ) => {
+  const searchCriteria: any = {};
+
+  if (name ) {
+    searchCriteria.sl_no = { $regex: new RegExp(name, 'i') };
+  }else if (category) {
+    searchCriteria.place = { $regex: new RegExp(category, 'i') };
+  }else{
+    return "No such order available"
+  }
+
+  const searchResult = await ClothItem.find(searchCriteria);
+   return searchResult
+}
+
 export const deleteClothItem = async (id: ObjectId) => {
 
     const result = await ClothItem.findByIdAndDelete(id);

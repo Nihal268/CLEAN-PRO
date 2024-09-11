@@ -45,5 +45,18 @@ adminRoute.post('/editMap', (req: Request, res: Response) => adminController.edi
 
 adminRoute.post('/editItem', (req: Request, res: Response) => adminController.editClothItems(req, res))
 
+adminRoute.post('/searchOrders', (req:Request,res:Response)=> adminController.searchOrders(req,res))
+adminRoute.post('/searchOrdersByDate', (req:Request,res:Response)=> adminController.searchOrdersByDate(req,res))
+adminRoute.post('/searchOrdersByMode', (req:Request,res:Response)=> adminController.searchOrdersByMode(req,res))
+
+
+adminRoute.post('/searchMap', (req:Request,res:Response)=> adminController.searchMap(req,res))
+
+adminRoute.post('/searchItems', (req:Request,res:Response)=> adminController.searchItem(req,res))
+
+adminRoute.post('/searchAgents', (req:Request,res:Response)=> adminController.searchAgent(req,res))
+
+
+
 
 export default adminRoute;

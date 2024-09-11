@@ -19,6 +19,21 @@ export const addMap = async (sl_no:number,place: string, latitude_longitude: [nu
      return editMap
   }
 
+  export const searchMaps = async ( sl_no?: number, place?: string ) => {
+    const searchCriteria: any = {};
+  
+    if (sl_no ) {
+      searchCriteria.sl_no = sl_no;
+    }else if (place) {
+      searchCriteria.place = { $regex: new RegExp(place, 'i') };
+    }else{
+      return "No such order available"
+    }
+
+    const searchResult = await Map.find(searchCriteria);
+     return searchResult
+  }
+
   export const fetchMapByPlace = async (place: string) => {
     const map = await Map.findOne({ place: place });
     return map;

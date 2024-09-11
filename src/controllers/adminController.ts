@@ -1,14 +1,14 @@
 import { Request, Response } from 'express';
 import { fetchAdmin } from '../services/adminLogin';
 import { fetchAllUser, fetchUserById } from '../services/adminUser';
-import { fetchAllAgents, addAgent, fetchAgent ,deleteAgent,editAgent} from '../services/adminAgent';
-import { addMap, fetchMapByPlace, fetchAllMaps, fetchMapById ,deleteMap,editMap} from '../services/adminMap';
-import { fetchAllClothitems, addClothItem, fetchClothesByNameAndCategory ,deleteClothItem,editClothItem} from '../services/adminClothitems';
+import { fetchAllAgents, addAgent, fetchAgent ,deleteAgent,editAgent,searchAgents} from '../services/adminAgent';
+import { addMap, fetchMapByPlace, fetchAllMaps, fetchMapById ,deleteMap,editMap,searchMaps} from '../services/adminMap';
+import { fetchAllClothitems, addClothItem, fetchClothesByNameAndCategory ,deleteClothItem,editClothItem,searchItems} from '../services/adminClothitems';
 import { ObjectId } from 'mongoose';
 import bcrypt from 'bcrypt'
 import { IAdmin ,Admin} from '../models/admin';
 import { getAllOrders } from '../services/order';
-import { GiveOrdersMonthlyEntry ,findOrderById} from '../services/adminOrder';
+import { GiveOrdersMonthlyEntry ,findOrderById,searchOrder,searchOrdersByDates,searchOrdersByModes} from '../services/adminOrder';
 import { sendSMS } from '../services/notifyToUser';
 
 
@@ -442,7 +442,6 @@ const notifyLaundryPickUp = async (req: Request, res: Response) => {
 
   if (emailSent) {
     res.status(200).send('Notification sent successfully');
-
   } else {
     res.status(500).send('Failed to send notification');
 
@@ -458,7 +457,6 @@ const editAgents = async (req: Request, res: Response) => {
 
    const {id,name,age,email,password,map} = req.body;
 
-  //  const editagent = await editAgent(id,name,age,email,password,map);
    const editagent = await editAgent(id, name, age, email, password, map);
 
 
@@ -484,7 +482,6 @@ const editMaps = async (req: Request, res: Response) => {
 
    const {userId,sl_no,place, latitude_longitude} = req.body;
 
-  //  const editagent = await editAgent(id,name,age,email,password,map);
    const editagent = await editMap(userId,sl_no,place, latitude_longitude);
 
 
@@ -510,20 +507,155 @@ const editClothItems = async (req: Request, res: Response) => {
 
    const {userId,name, category, icon , prices} = req.body;
 
-  //  const editagent = await editAgent(id,name,age,email,password,map);
    const editagent = await editClothItem(userId,name, category, icon , prices);
 
 
    if (!editagent) {
-    return res.status(400).send('Email is required');
+    return res.status(400).send('userId,name, category, icon , prices is required');
   }
 
   if (editagent) {
-    res.status(200).send('Notification sent successfully');
+    res.status(200).send('successfully');
 
   } else {
-    res.status(500).send('Failed to send notification');
+    res.status(500).send('Failed ');
 
+  }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+const searchOrders = async (req: Request, res: Response) => {
+  try {
+
+   const { orderstatus } = req.body;
+
+   const searchOrders = await searchOrder(orderstatus);
+
+
+   if (!searchOrders) {
+    return res.status(400).send('orderstatus is required');
+  }
+  if (searchOrders) {
+    res.status(200).send(' successfully');
+
+  } else {
+    res.status(500).send('Failed ');
+  }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+const searchOrdersByDate = async (req: Request, res: Response) => {
+  try {
+
+   const { date1,date2 } = req.body;
+
+   const searchOrders = await searchOrdersByDates( date1,date2);
+
+
+   if (!searchOrders) {
+    return res.status(400).send(' date1,date2 is required');
+  }
+  if (searchOrders) {
+    res.status(200).send(' successfully');
+
+  } else {
+    res.status(500).send('Failed');
+  }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+const searchOrdersByMode = async (req: Request, res: Response) => {
+  try {
+
+   const { mode } = req.body;
+
+   const searchOrders = await searchOrdersByModes( mode);
+
+
+   if (!searchOrders) {
+    return res.status(400).send('Mode is required');
+  }
+  if (searchOrders) {
+    res.status(200).send('successfully');
+
+  } else {
+    res.status(500).send('Failed ');
+  }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+}
+
+const searchMap = async (req: Request, res: Response) => {
+  try {
+
+   const { sl_no, place} = req.body;
+
+   const searchmap = await searchMaps(sl_no, place);
+
+
+   if (!searchmap) {
+    return res.status(400).send('sl_no, place is required');
+  }
+  if (searchmap) {
+    res.status(200).send(' successfully');
+
+  } else {
+    res.status(500).send(' notification');
+  }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+const searchItem = async (req: Request, res: Response) => {
+  try {
+
+   const { name, category} = req.body;
+
+   const searchitem = await searchItems(name, category);
+
+
+   if (!searchitem) {
+    return res.status(400).send('Name ,category is required');
+  }
+  if (searchitem) {
+    res.status(200).send(' successfully');
+
+  } else {
+    res.status(500).send('Failed');
+  }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+};
+
+const searchAgent = async (req: Request, res: Response) => {
+  try {
+
+   const { name, email} = req.body;
+
+   const searchAgent = await searchAgents(name, email);
+
+
+   if (!searchAgent) {
+    return res.status(400).send('Name ,Email is required');
+  }
+  if (searchAgent) {
+    res.status(200).send(' successfully');
+
+  } else {
+    res.status(500).send('Failed');
   }
   } catch (error) {
     console.error(error);
@@ -552,6 +684,14 @@ export default {
   notifyLaundryPickUp,
   editAgents,
    editMaps,
-  editClothItems
+  editClothItems,
+  searchOrders,
+  searchOrdersByDate,
+  searchOrdersByMode,
+  searchMap,
+  searchItem,
+  searchAgent
+
+
 
 }
