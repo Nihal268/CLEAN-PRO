@@ -14,7 +14,7 @@ userRoute.post('/signUp', (req: Request, res: Response) => userController.signUp
 
 userRoute.get('/getItems', (req: Request, res: Response) => itemController.getAllClothItems(req, res))
 
-userRoute.get('/addToCart', (req: Request, res: Response) => cartController.addToCart(req, res))
+userRoute.post('/addToCart', (req: Request, res: Response) => cartController.addToCart(req, res))
 
 userRoute.patch('/removeFromCart', (req: Request, res: Response) => cartController.removeFromCart(req, res))
 
