@@ -33,11 +33,16 @@ export const calculateTotalAmount = async (userId: string, deliveryMode: IDelive
 
 
 export const createOrder = async (userId: string, addressId: string, deliveryMode: IDeliveryModeParams) => {
-  const clothItems = await fetchUserCartItems(userId)
+  try {
+    const clothItems = await fetchUserCartItems(userId);
 
-  if (clothItems) {
+    // Check if there are any cloth items in the cart
+    if (!clothItems || clothItems.length === 0) {
+      throw new Error("No items in cart");
+    }
+
     const itemsWithPrices = clothItems.map(item => {
-      const clothItem = item.clothItemId as unknown as IClothItem
+      const clothItem = item.clothItemId as unknown as IClothItem;
       const price = clothItem.prices[item.service];
 
       return {
@@ -48,23 +53,46 @@ export const createOrder = async (userId: string, addressId: string, deliveryMod
         service: item.service,
         unitPrice: price,
       };
-    })
-    console.log(itemsWithPrices)
-    const totalPrice = await calculateTotalAmount(userId, deliveryMode)
+    });
 
-    // finding the agent for this order
-    const address = await getAddressById(addressId)
-    if (!address) { return false }
+    console.log(itemsWithPrices);
+    
+    // Calculate total price
+    const totalPrice = await calculateTotalAmount(userId, deliveryMode);
+
+    // Finding the agent for this order
+    const address = await getAddressById(addressId);
+    if (!address) {
+      throw new Error("Address not found");
+    }
 
     const latitudeLongitude = address.location.coordinates;
-    const mapId = await findMapContainingCoordinates(latitudeLongitude) as string
-    if (!mapId) { return false }
+    const mapId = await findMapContainingCoordinates(latitudeLongitude) as string;
+    
+    if (!mapId) {
+      throw new Error("Map ID not found");
+    }
 
-    const agent = await findAgentByMapId(mapId)
-    if (!agent) { return false }
+    const agent = await findAgentByMapId(mapId);
+    
+    if (!agent) {
+      throw new Error("Agent not found");
+    }
 
-    const newOrder = await Order.create({ userId, addressId, deliveryMode, totalPrice, clothItems: itemsWithPrices, agentId: agent._id })
-    return newOrder
+    // Create the new order
+    const newOrder = await Order.create({
+      userId,
+      addressId,
+      deliveryMode,
+      totalPrice,
+      clothItems: itemsWithPrices,
+      agentId: agent._id
+    });
+
+    return newOrder; // Return the newly created order
+  } catch (error) {
+    console.error( error);
+    return null; // Return null or handle error appropriately
   }
 }
 
