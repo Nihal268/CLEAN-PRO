@@ -70,7 +70,7 @@ export const createOrder = async (userId: string, addressId: string, deliveryMod
     const mapId = await findMapContainingCoordinates(latitudeLongitude) as string;
     
     if (!mapId) {
-      throw new Error("Map ID not found");
+      throw new Error("You are out of our boundary");
     }
 
     const agent = await findAgentByMapId(mapId);
