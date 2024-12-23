@@ -20,3 +20,10 @@ export const addUser = async (name: string, email: string, mobile: number) => {
   return newUser
 }
 
+export const updateUser = async (userId: string,name: string, email: string, mobile: number) => {
+  const updatedUser = await User.findByIdAndUpdate(
+    userId, 
+    { name, email, mobile }
+  ); 
+  return updatedUser
+}

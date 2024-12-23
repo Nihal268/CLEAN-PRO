@@ -31,7 +31,7 @@ app.use(express.urlencoded({extended:true}));
 
 app.get('/',(req,res)=>{
   
-  res.send('This is Cleanpro backend')
+  res.send('This is Cleanpro backend:Clean_Pro_Backend is Running')
   
 })
 app.use("/api/user", userRoute);

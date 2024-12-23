@@ -34,6 +34,9 @@ userRoute.get('/userOrders/:userId', (req: Request, res: Response) => orderContr
 
 userRoute.get('/profileData/:userId', (req: Request, res: Response) => userController.fetchProfileData(req, res))
 
+userRoute.post('/profileDataUpdate/:userId', (req: Request, res: Response) => userController.fetchProfileDataUpdate(req, res))
+
+
 
 
 
